@@ -1,8 +1,141 @@
 body {
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 14px;
+  background-color:
 }
 
 a {
   color: #00B7FF;
+}
+
+/* Post container */
+.postContainer {
+  padding: 6px;
+  margin: 4px;
+}
+
+/* Add inline reference */
+.postContainer > div {
+  vertical-align: top;
+  display: inline-block;
+  margin: 4px;
+}
+
+/* User name */
+.postName {
+
+}
+
+/* Date */
+.postDate {
+
+}
+
+/* Header elements */
+.postName, .postDate, .postSubject {
+  margin-left: 2px;
+  margin-right: 2px;
+  font-size: 14px;
+}
+
+/* Body of post */
+.postBody {
+  margin: 16px;
+  font-size: 90%;
+}
+
+.postFooter {
+
+}
+
+.postWrapper {
+  max-width: 90%;
+  word-wrap: break-word;
+}
+
+.postCode {
+  font-size: 12px;
+  font-style: italic;
+}
+
+/* Center form */
+.postForm {
+  margin: auto;
+}
+
+.postOption {
+  margin: 0px 4px 0px 4px;
+}
+
+table.postForm td * {
+  padding: 4px;
+}
+
+table.postForm td input {
+  border: none;
+  padding: 4px;
+  line-height: normal;
+  font-family: monospace;
+}
+
+#userName {
+  width: 300px;
+}
+
+#submit {
+  width: 96px;
+  margin: 0px 4px 0px 4px;
+}
+
+#userEmail, #userSubject {
+  width: 400px;
+}
+
+table.postForm td textarea {
+  width: 399px;
+}
+
+.boardHeader {
+  text-align: center;
+  font-size: 200%;
+  font-weight: 600;
+}
+
+.boardTitle {
+  font-size: 150%;
+}
+
+.boardOwner {
+  font-weight: 400;
+  font-style: italic;
+}
+
+.boardList, .threadList {
+
+}
+
+.boardListElement, .threadListElement {
+  margin: 16px;
+}
+
+.boardListElementProperty, .threadListElementProperty {
+  padding: 5px;
+  overflow: hidden;
+  margin: 5px;
+}
+
+.topBar {
+  height: 20px;
+}
+
+.leftBar {
+  float: left;
+}
+
+.rightBar {
+  float: right;
+}
+
+.postContainer:target {
+  background-color: #eee;
 }

@@ -1,0 +1,9 @@
+extends layout
+include templates
+
+block content
+  +topBar('/site/')
+  hr
+  +inputThreadForm()
+  hr
+  +threadListFormat(threadList)

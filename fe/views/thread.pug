@@ -1,0 +1,9 @@
+extends layout
+include templates
+
+block content
+  +topBar('/site/'+listName)
+  hr
+  +inputReplyForm()
+  hr
+  +postListFormat(postList)

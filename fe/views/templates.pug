@@ -1,0 +1,139 @@
+//- 
+  Form elements
+  
+  Hierarchy:
+  
+  > inputForm
+    > nameArea
+    > inputPart
+    > postArea
+
+mixin inputReplyForm()
+  h3 Post reply
+  +inputForm()
+  
+mixin inputThreadForm()
+  h3 Post thread
+  +inputForm()
+
+mixin inputForm()
+  div
+    form(method='post')
+      table(class='postForm')
+        +nameArea()
+        +inputPart('E-mail', 'userEmail', 'email')
+        +inputPart('Subject', 'userSubject', 'subject')
+        +postArea()
+              
+mixin inputPart (label, inputId, inputName)
+  tr
+    th #{label}:
+    td 
+      input(id=inputId type="text" name=inputName)
+  
+mixin postArea ()
+  tr
+    th Post:
+    td
+      textarea(name="text" rows="6" id="text")
+
+mixin nameArea ()
+  tr
+    th Name:
+    td
+      input(id='userName' type="text" name="name")
+      input(id='submit' type='submit' name='submit' value='Submit')
+
+//- 
+  Post elements
+  
+  Hierarchy:
+  
+  > postList
+    > post
+      > postHeader
+        > postElement
+      > postBody
+      > postFooter
+    
+mixin postListFormat(postList)
+  each val in postList
+    +post(val.name, val.email, val.text, val.date, val.subject, val.id)
+    hr
+
+mixin post(name, email, body, date, subject, code)
+  div(id=code class='postContainer')
+    div(class='ref')
+      a(href='#'+code) &gt;&gt;
+    div(class='postWrapper')
+      +postHeader(name, email, date, subject, code)
+      +postBody(body)
+      +postFooter(code)
+
+mixin postFooter(code)
+  div(class='postFooter')
+    div(class='postCode') ID: #{code}
+
+mixin postBody(body)
+  div(class='postBody')
+    each val in body
+      p!= val
+
+mixin postHeader(name, email, date, subject, code)
+  div(class='postHeader')
+    div(class='postOptions')
+      a(class='postOption' href='#text' onclick='copyReply(\''+code+'\');')
+        span Reply
+      a(class='postOption' href='#postText')
+        span Report
+    +postElement('postName', 'Name', name+' ['+email+']')
+    +postElement('postDate', 'Date', date)
+    +postElement('postSubject', 'Subject', subject)
+    
+mixin postElement (elementClass, label, value)
+  div(class=elementClass) 
+    strong #{label}: 
+    span #{value}
+
+mixin board (listName, description, owner)
+  tr(class='boardListElement')
+    td(class='boardListElementProperty')
+      a(href='/site/'+listName)
+        if listName
+          = listName
+        else
+          span master
+    td(class='boardListElementProperty')= description
+    td(class='boardListElementProperty')= owner
+
+//-
+  Thread listing
+  
+  Hierarchy:
+  
+  > threadList
+    > thread
+
+mixin threadListFormat(threadList)
+  table
+    each val in threadList
+      +thread(val)
+    
+mixin thread (thread)
+  tr(class='threadListElement')
+    td(class='threadListElementProperty')
+      a(href='/site/'+thread.list+'/'+thread.id)
+        span= thread.subject
+    td(class='threadListElementProperty')= thread.author
+    td(class='threadListElementProperty')= thread.bump
+    td(class='threadListElementProperty')= thread.bumper
+
+//-
+  Top bar
+
+mixin topBar(returnLink)
+  div(class='topBar')
+    span(class='leftBar')
+      a(href=returnLink) Return
+    span(class='rightBar')
+      a(href='/login') Login  
