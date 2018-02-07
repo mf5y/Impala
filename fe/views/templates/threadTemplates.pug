@@ -33,12 +33,12 @@ mixin thread (thread)
     td(class='threadListElementProperty')!= thread.bumper
 
 mixin boardListFormat(boardList)
-  table(class='threadList')
+  table(class='boardList')
     tr
-      th(class='threadListElementProperty') Board name
-      th(class='threadListElementProperty') Description
-      th(class='threadListElementProperty') Owner
-    each val in threadList
+      th(class='boardListElementProperty') Board name
+      th(class='boardListElementProperty') Description
+      th(class='boardListElementProperty') Owner
+    each val in boardList
       +board(val)
 
 mixin board (board)
