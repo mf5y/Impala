@@ -16,6 +16,7 @@
     "express-session": "^1.15.6",
     "mongodb": "^3.0.2",
     "morgan": "~1.9.0",
+    "node-cache": "^4.1.1",
     "parse-json": "^4.0.0",
     "pug": "2.0.0-beta11",
     "random-bytes": "^1.0.0",

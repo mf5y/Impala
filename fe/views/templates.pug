@@ -149,3 +149,12 @@ mixin topBar(returnLink)
       a(href=returnLink) Return
     span(class='rightBar')
       a(href='/login') Login  
+
+//-
+  Header
+mixin header(boardName, boardDescription, boardOwner)
+  div(class='boardHeader')
+    div(class='boardHeaderTitle') /#{boardName}/
+    div(class='boardHeaderDescription')= boardDescription
+      
+  

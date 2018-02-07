@@ -1,11 +1,42 @@
-var settings = require('../settings.json');
+var defaultSettings = require('../settings.json');
 var util = require('../util/general.js');
 var stringUtil = require('../util/string.js');
 var svgCaptcha = require('svg-captcha');
+var nodeCache = require('node-cache');
+var manageDb = require('../db/manageDb');
 
 const captchaSettings = {
   size : 6,
   noise: 3
+}
+
+var settingsCache = new nodeCache();
+
+module.exports.getSettings = function (req, res, next) {
+  var list = req.params.list;
+
+  /* Get from cache */
+  var settings = settingsCache.get(list);
+
+  /* In the case of a cache miss */
+  if (settings == undefined) {
+    manageDb.getListSettings(list).then(lists => {
+      /* First result */
+      settings = lists[0];
+
+      /* Cache */
+      settingsCache.set(list, settings);
+
+      /* Set and continue */
+      req.settings = Object.assign(defaultSettings, settings);
+      next();
+    });
+  }
+  else {
+    /* Set and continue */
+    req.settings = Object.assign(defaultSettings, settings);
+    next();
+  }
 }
 
 /* Sanitize user input fields */
@@ -38,16 +69,16 @@ module.exports.generateCaptcha = function (req, res, next) {
 /* Make sure post has no errors */
 module.exports.checkPost = function (req, res, next) {
   /* Make sure correct length */
-  if (req.body.text.length < settings.minPostSize && settings.minPostSize != 0) {
-    var errorMsg = 'Post too short! (minimum ' + settings.minPostSize + ' characters)';
+  if (req.body.text.length < req.settings.minPostSize && req.settings.minPostSize != 0) {
+    var errorMsg = 'Post too short! (minimum ' + req.settings.minPostSize + ' characters)';
     var error = new Error(errorMsg);
 
     /* Call error handler */
     next(error);
   }
 
-  if (req.body.text.length > settings.maxPostSize && settings.maxPostSize != 0) {
-    var errorMsg = 'Post too long! (maximum ' + settings.maxPostSize + ' characters)';
+  if (req.body.text.length > req.settings.maxPostSize && req.settings.maxPostSize != 0) {
+    var errorMsg = 'Post too long! (maximum ' + req.settings.maxPostSize + ' characters)';
     var error = new Error(errorMsg);
 
     /* Call error handler */
@@ -55,7 +86,7 @@ module.exports.checkPost = function (req, res, next) {
   }
 
   /* Make sure valid e-mail */
-  if (settings.checkEmail && !req.body.email.includes('@') || !req.body.email.includes('.')) {
+  if (req.settings.checkEmail && !req.body.email.includes('@') || !req.body.email.includes('.')) {
     var errorMsg = 'Invalid e-mail format!';
     var error = new Error(errorMsg);
 
@@ -64,7 +95,7 @@ module.exports.checkPost = function (req, res, next) {
   }
 
   /* Make sure subject exists */
-  if (settings.requireSubject && req.body.subject == '') {
+  if (req.settings.requireSubject && req.body.subject == '') {
     var errorMsg = 'Subject required!';
     var error = new Error(errorMsg);
 
@@ -78,7 +109,7 @@ module.exports.checkPost = function (req, res, next) {
 
 /* Make sure captcha is correct */
 module.exports.checkCaptcha = function (req, res, next) {
-  if (settings.showCaptcha && !req.session.captchaValid) {
+  if (req.settings.showCaptcha && !req.session.captchaValid) {
     var errorMsg = 'Expired captcha!';
     var error = new Error(errorMsg);
 
@@ -89,7 +120,7 @@ module.exports.checkCaptcha = function (req, res, next) {
   }
 
   /* Captcha correct? */
-  if (settings.showCaptcha && req.session.captcha != req.body.captcha) {
+  if (req.settings.showCaptcha && req.session.captcha != req.body.captcha) {
     var errorMsg = 'Wrong captcha!';
     var error = new Error(errorMsg);
 

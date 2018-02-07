@@ -2,7 +2,9 @@ extends layout
 include templates
 
 block content
-  +topBar('/site/'+listName)
+  +topBar('/site/'+settings.name)
+  hr
+  +header(settings.name, settings.description, settings.owner)
   hr
   +inputReplyForm(captchaSvg)
   hr

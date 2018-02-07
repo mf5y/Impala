@@ -4,6 +4,8 @@ include templates
 block content
   +topBar('/site/')
   hr
+  +header(settings.name, settings.description, settings.owner)
+  hr
   +inputThreadForm(captchaSvg)
   hr
   +threadListFormat(threadList)

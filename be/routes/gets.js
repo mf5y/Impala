@@ -12,6 +12,7 @@ module.exports.listPage = function(req, res, next) {
   manageDb.getThreads(list).then(threads => {
     res.render('list', {
       threadList : threads,
+      settings : req.settings,
       captchaSvg : req.captcha
     });
   }).catch(err => {
@@ -31,7 +32,7 @@ module.exports.threadPage = function(req, res, next) {
 
     res.render('thread', {
       postList : posts,
-      listName : listName,
+      settings : req.settings,
       captchaSvg : req.captcha
     });
   }).catch(err => {

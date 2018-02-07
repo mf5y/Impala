@@ -1,5 +1,4 @@
 var mongoClient = require('mongodb');
-var defaults = require('./defaults');
 var base32 = require('base32');
 var randomBytes = require('random-bytes');
 
@@ -199,4 +198,18 @@ module.exports.getPosts = function(list, thread) {
         else return Promise.reject(new Error ('Thread not found!'));
       });
     });
+}
+
+/* Get list settings */
+module.exports.getListSettings = function(list) {
+  return mongoClient.connect(url)
+    .then(client => {
+      /* Lists collection */
+      var db = client.db('local');
+      var lists = db.collection('lists');
+
+      return lists.find({
+        'name': list
+      }).toArray();
+    })
 }
