@@ -11,6 +11,7 @@ module.exports.addList = function (properties) {
 
   /* Remove special characters */
   var name = properties.name.replace(/[^\w\s\.]/gi, '');
+
   /* Remove last dot */
   var parent = name.split('.').slice(0, -1).join('.');
 
@@ -39,19 +40,6 @@ module.exports.addList = function (properties) {
           else return Promise.reject(new Error ('Parent list not found!'))
         });
     });
-}
-
-/* Removes list from database */
-module.exports.delList = function (list) {
-
-  return mongoClient.connect(url)
-    .then(client => {
-      /* Lists collection */
-      var db = client.db('local');
-      var lists = db.collection('lists');
-
-      return lists.deleteOne({ 'name' : list });
-    })
 }
 
 /* Adds thread to database */
@@ -103,6 +91,7 @@ module.exports.addThread = function (list, properties) {
         });
     });
 }
+
 /* Adds post to database */
 module.exports.addPost = function (list, thread, properties) {
   /* Random code */
@@ -168,6 +157,26 @@ module.exports.addPost = function (list, thread, properties) {
     });
 }
 
+
+
+/* Get child lists */
+module.exports.getLists = function (parent) {
+  var parentEscaped = parent.replace('.', '\\.');
+  var regex = new RegExp('^' + parentEscaped + '\\.[a-z]*$');
+
+  return mongoClient.connect(url)
+    .then(client => {
+      /* Lists collection */
+      var db = client.db('local');
+      var lists = db.collection('lists');
+
+      /* Get child lists */
+      return lists.find({
+        'name': regex
+      }).toArray();
+    });
+}
+
 /* Get threads in list */
 module.exports.getThreads = function(list) {
   return mongoClient.connect(url)
@@ -229,5 +238,19 @@ module.exports.getListSettings = function(list) {
         /* Otherwise error */
         else return Promise.reject(new Error ('List not found!'));
       });
+      });
+    });
+}
+
+/* Removes list from database */
+module.exports.delList = function (list) {
+
+  return mongoClient.connect(url)
+    .then(client => {
+      /* Lists collection */
+      var db = client.db('local');
+      var lists = db.collection('lists');
+
+      return lists.deleteOne({ 'name' : list });
     })
 }
