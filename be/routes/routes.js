@@ -8,6 +8,11 @@ var middleware = require('./middleware');
 /* Sanitize user sent input */
 router.use(middleware.sanitizeProperties);
 
+/* GETs */
+
+/* Generate captcha */
+router.get(['/site/:list', '/site/:list/:thread'], middleware.generateCaptcha);
+
 /* Performance */
 router.get('/', getsRoutes.homePage);
 router.get('/site/:list/', getsRoutes.listPage);

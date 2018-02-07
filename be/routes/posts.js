@@ -1,5 +1,4 @@
 var manageDb = require('../db/manageDb');
-var util = require('../util/general');
 
 /* Creation of a list */
 module.exports.makeList = function(req, res, next) {

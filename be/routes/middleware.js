@@ -1,6 +1,12 @@
 var settings = require('../settings.json');
-var util = require('../util/general.js')
-var stringUtil = require('../util/string.js')
+var util = require('../util/general.js');
+var stringUtil = require('../util/string.js');
+var svgCaptcha = require('svg-captcha');
+
+const captchaSettings = {
+  size : 6,
+  noise: 3
+}
 
 /* Sanitize user input fields */
 module.exports.sanitizeProperties = function (req, res, next) {
@@ -9,6 +15,21 @@ module.exports.sanitizeProperties = function (req, res, next) {
 
   /* Sanitize body */
   req.body = util.sanitize(req.body);
+
+  /* Continue */
+  next();
+}
+
+module.exports.generateCaptcha = function (req, res, next) {
+  /* Create and save captcha */
+  var captcha = svgCaptcha.create(captchaSettings);
+
+  /* Save correct answer and set the captcha as valid */
+  req.session.captcha = captcha.text;
+  req.session.captchaValid = true;
+
+  /* Pass captcha picture to next function */
+  req.captcha = captcha.data;
 
   /* Continue */
   next();
