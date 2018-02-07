@@ -83,7 +83,7 @@ module.exports.addThread = function (list, properties) {
           'subject': subject,
           'bump': date,
           'bumper': name,
-          'stickied': true
+          'stickied': false
         }).then(() => {
           /* Insert post */
           return posts.insert({
