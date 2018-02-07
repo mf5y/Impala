@@ -238,6 +238,26 @@ module.exports.getListSettings = function(list) {
         /* Otherwise error */
         else return Promise.reject(new Error ('List not found!'));
       });
+    });
+}
+
+/* Get user data */
+module.exports.getUserData = function(name) {
+  return mongoClient.connect(url)
+    .then(client => {
+      /* Users collection */
+      var db = client.db('local');
+      var users = db.collection('users');
+
+      return lists.find({
+        'name': name
+      }).toArray().then(users => {
+        /* If there is a user */
+        if (users.length > 0) {
+          return Promise.resolve(users[0]);
+        }
+        /* Otherwise error */
+        else return Promise.reject(new Error ('List not found!'));
       });
     });
 }
