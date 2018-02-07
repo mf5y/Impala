@@ -138,6 +138,8 @@ mixin thread (thread)
         span!= thread.subject
       if thread.stickied
         +sticky()
+      if thread.locked
+        +locked()
     td(class='threadListElementProperty')!= thread.author
     td(class='threadListElementProperty')!= thread.bump
     td(class='threadListElementProperty')!= thread.bumper
@@ -162,3 +164,6 @@ mixin header(boardName, boardDescription, boardOwner)
 //- Sticky    
 mixin sticky()
   img(class='threadIcon' src='/images/sticky.png')
+    
+mixin locked()
+  img(class='threadIcon' src='/images/locked.png')

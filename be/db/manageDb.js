@@ -83,7 +83,8 @@ module.exports.addThread = function (list, properties) {
           'subject': subject,
           'bump': date,
           'bumper': name,
-          'stickied': false
+          'stickied': false,
+          'locked': true
         }).then(() => {
           /* Insert post */
           return posts.insert({
@@ -129,18 +130,23 @@ module.exports.addPost = function (list, thread, properties) {
       }).toArray()
         .then(threads => {
           /* If parent exists */
-          if (threads.length > 0) {
-            /* Add list */
-            return posts.insert({
-              'list': list,
-              'id': code,
-              'threadID': thread,
-              'name': name,
-              'text': text,
-              'email': email,
-              'subject': subject,
-              'date': date
-            });
+          if (threads.length == 1) {
+            /* And isn't locked */
+            if (!threads[0].locked) {
+              /* Add post */
+              return posts.insert({
+                'list': list,
+                'id': code,
+                'threadID': thread,
+                'name': name,
+                'text': text,
+                'email': email,
+                'subject': subject,
+                'date': date
+              });
+            }
+            /* Otherwise throw error */
+            else return Promise.reject(new Error ('Thread locked!'))
           }
           /* Otherwise throw error */
           else return Promise.reject(new Error ('Thread not found!'))
