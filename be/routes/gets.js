@@ -14,13 +14,13 @@ module.exports.listPage = function(req, res, next) {
 
   manageDb.getThreads(list).then(threads => {
     /* Set threads property */
-    req.renderProperties.threadList = threads;
+    req.renderProperties.threads = threads;
 
     /* Get lists */
     return manageDb.getLists(list);
   }).then(lists => {
     /* Set lists property */
-    req.renderProperties.boardList = lists;
+    req.renderProperties.lists = lists;
 
     /* Set misc properties */
     req.renderProperties.settings = req.settings;
@@ -44,11 +44,11 @@ module.exports.threadPage = function(req, res, next) {
 
   manageDb.getPosts(list, thread).then((posts) => {
     /* Set lists property */
-    req.renderProperties.postList = posts;
+    req.renderProperties.posts = posts;
 
     /* Set misc properties */
     req.renderProperties.settings = req.settings;
-    req.renderProperties.svgCaptcha = req.captcha;
+    req.renderProperties.captcha = req.captcha;
 
     /* Next middleware */
     next();
