@@ -10,7 +10,9 @@ const captchaSettings = {
   noise: 3
 }
 
-var settingsCache = new nodeCache();
+var settingsCache = new nodeCache({
+  stdTTL: 600 /* Ten minute cache */
+});
 
 module.exports.getSettings = function (req, res, next) {
   var list = req.params.list;
