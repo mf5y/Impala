@@ -158,3 +158,11 @@ module.exports.applyFormatting = function (req, res, next) {
   /* Continue */
   next();
 }
+
+module.exports.render = function (req, res, next) {
+  var template = req.template;
+  var properties = req.renderProperties;
+
+  /* Render */
+  res.render(template, properties);
+}

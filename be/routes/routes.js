@@ -23,6 +23,9 @@ router.get('/site/:list/:thread/', getsRoutes.threadPage);
 
 router.get('/login', getsRoutes.loginPage);
 
+/* Render */
+router.get('/*', middleware.render);
+
 /* POSTs */
 
 /* Error checking functions */

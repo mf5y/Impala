@@ -9,19 +9,25 @@ module.exports.homePage = function(req, res, next) {
 module.exports.listPage = function(req, res, next) {
   var list = req.params.list;
 
-  var threadList;
-  var listList;
+  req.renderProperties = {};
+  req.template = 'list';
 
   manageDb.getThreads(list).then(threads => {
-    threadList = threads;
+    /* Set threads property */
+    req.renderProperties.threadList = threads;
+
+    /* Get lists */
     return manageDb.getLists(list);
   }).then(lists => {
-    res.render('list', {
-      threadList : threadList,
-      boardList : lists,
-      settings : req.settings,
-      captchaSvg : req.captcha
-    });
+    /* Set lists property */
+    req.renderProperties.boardList = lists;
+
+    /* Set misc properties */
+    req.renderProperties.settings = req.settings;
+    req.renderProperties.svgCaptcha = req.captcha;
+
+    /* Next middleware */
+    next();
   }).catch(err => {
     /* If error, forward it */
     next(err);
@@ -33,12 +39,19 @@ module.exports.threadPage = function(req, res, next) {
   var list = req.params.list;
   var thread = req.params.thread;
 
+  req.renderProperties = {};
+  req.template = 'thread';
+
   manageDb.getPosts(list, thread).then((posts) => {
-    res.render('thread', {
-      postList : posts,
-      settings : req.settings,
-      captchaSvg : req.captcha
-    });
+    /* Set lists property */
+    req.renderProperties.postList = posts;
+
+    /* Set misc properties */
+    req.renderProperties.settings = req.settings;
+    req.renderProperties.svgCaptcha = req.captcha;
+
+    /* Next middleware */
+    next();
   }).catch(err => {
     /* If error, forward it */
     next(err);
