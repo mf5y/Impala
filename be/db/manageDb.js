@@ -8,9 +8,7 @@ const url = 'mongodb://localhost:27017';
 module.exports.addList = function (properties) {
   var description = properties.owner;
   var owner = properties.owner;
-
-  /* Remove special characters */
-  var name = properties.name.replace(/[^\w\s\.]/gi, '');
+  var name = properties.name;
 
   /* Remove last dot */
   var parent = name.split('.').slice(0, -1).join('.');
@@ -156,8 +154,6 @@ module.exports.addPost = function (list, thread, properties) {
         });
     });
 }
-
-
 
 /* Get child lists */
 module.exports.getLists = function (parent) {
