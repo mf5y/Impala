@@ -16,10 +16,12 @@ router.all(['/site/:list', '/site/:list/:thread'], middleware.getSettings);
 /* Generate captcha */
 router.get(['/site/:list', '/site/:list/:thread'], middleware.generateCaptcha);
 
-/* Performance */
+/* Process GETs */
 router.get('/', getsRoutes.homePage);
 router.get('/site/:list/', getsRoutes.listPage);
 router.get('/site/:list/:thread/', getsRoutes.threadPage);
+
+router.get('/login', getsRoutes.loginPage);
 
 /* POSTs */
 
@@ -31,7 +33,7 @@ router.post(['/site/:list', '/site/:list/:thread'], middleware.invalidateCaptcha
 /* Modifying functions */
 router.post(['/site/:list', '/site/:list/:thread'], middleware.applyFormatting);
 
-/* Performance */
+/* Process POSTs */
 router.post('/site', postsRoutes.makeList);
 router.post('/site/:list/', postsRoutes.makeThread);
 router.post('/site/:list/:thread/', postsRoutes.makePost);
