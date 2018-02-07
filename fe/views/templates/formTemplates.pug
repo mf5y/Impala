@@ -31,8 +31,15 @@ mixin captcha(captchaSvg)
 mixin inputPart (label, inputId, inputName)
   tr
     th #{label}:
-      td 
-        input(id=inputId type="text" name=inputName)
+    td 
+      input(id=inputId type="text" name=inputName)
+
+
+mixin passwordPart (label, inputId, inputName)
+  tr
+    th #{label}:
+    td 
+      input(id=inputId type="password" name=inputName)
 
 mixin postArea ()
   tr
@@ -45,4 +52,7 @@ mixin nameArea ()
     th Name:
     td
       input(id='userName' type="text" name="name")
-      input(id='submit' type='submit' name='submit' value='Submit')
+      +submit()
+
+mixin submit ()
+  input(id='submit' type='submit' name='submit' value='Submit')

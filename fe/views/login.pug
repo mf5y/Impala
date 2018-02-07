@@ -1,0 +1,9 @@
+extends layout
+
+include templates/loginTemplates
+
+block content
+  +topBar('/site/')
+  hr
+  h3 Login
+  +loginForm()

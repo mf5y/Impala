@@ -59,7 +59,7 @@ a {
 }
 
 /* Center form */
-.postForm {
+.postForm, .loginForm {
   margin: auto;
 }
 
@@ -67,15 +67,19 @@ a {
   margin: 0px 4px 0px 4px;
 }
 
-table.postForm td * {
+table.postForm td *, table.loginForm td * {
   padding: 4px;
 }
 
-table.postForm td input {
+table.postForm td input, table.loginForm td input {
   border: none;
   padding: 4px;
   line-height: normal;
   font-family: monospace;
+}
+
+table.postForm td textarea {
+  width: 399px;
 }
 
 #userName {
@@ -89,10 +93,6 @@ table.postForm td input {
 
 #userEmail, #userSubject {
   width: 400px;
-}
-
-table.postForm td textarea {
-  width: 399px;
 }
 
 .boardHeader {
