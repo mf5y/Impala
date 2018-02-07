@@ -18,18 +18,20 @@ module.exports.getSettings = function (req, res, next) {
   /* Get from cache */
   var settings = settingsCache.get(list);
 
+  console.log(settings);
+
   /* In the case of a cache miss */
   if (settings == undefined) {
-    manageDb.getListSettings(list).then(lists => {
-      /* First result */
-      settings = lists[0];
-
+    manageDb.getListSettings(list).then(listSettings => {
       /* Cache */
-      settingsCache.set(list, settings);
+      settingsCache.set(list, listSettings);
 
       /* Set and continue */
-      req.settings = Object.assign(defaultSettings, settings);
+      req.settings = Object.assign(defaultSettings, listSettings);
       next();
+    }).catch(err => {
+      /* If error, forward it */
+      next(err);
     });
   }
   else {

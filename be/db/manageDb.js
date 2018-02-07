@@ -210,6 +210,13 @@ module.exports.getListSettings = function(list) {
 
       return lists.find({
         'name': list
-      }).toArray();
+      }).toArray().then(lists => {
+        /* If there are posts */
+        if (lists.length > 0) {
+          return Promise.resolve(lists[0]);
+        }
+        /* Otherwise error */
+        else return Promise.reject(new Error ('List not found!'));
+      });
     })
 }
