@@ -27,9 +27,6 @@ module.exports.threadPage = function(req, res, next) {
   var thread = req.params.thread;
 
   manageDb.getPosts(list, thread).then((posts) => {
-    /* All are from the same list so we can just take one */
-    var listName = posts[0].list;
-
     res.render('thread', {
       postList : posts,
       settings : req.settings,

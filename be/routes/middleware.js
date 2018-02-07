@@ -18,8 +18,6 @@ module.exports.getSettings = function (req, res, next) {
   /* Get from cache */
   var settings = settingsCache.get(list);
 
-  console.log(settings);
-
   /* In the case of a cache miss */
   if (settings == undefined) {
     manageDb.getListSettings(list).then(listSettings => {

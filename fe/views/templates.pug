@@ -136,6 +136,8 @@ mixin thread (thread)
     td(class='threadListElementProperty')
       a(href='/site/'+thread.list+'/'+thread.id)
         span!= thread.subject
+      if thread.stickied
+        +sticky()
     td(class='threadListElementProperty')!= thread.author
     td(class='threadListElementProperty')!= thread.bump
     td(class='threadListElementProperty')!= thread.bumper
@@ -156,5 +158,7 @@ mixin header(boardName, boardDescription, boardOwner)
   div(class='boardHeader')
     div(class='boardHeaderTitle') /#{boardName}/
     div(class='boardHeaderDescription')= boardDescription
-      
   
+//- Sticky    
+mixin sticky()
+  img(class='threadIcon' src='/images/sticky.png')

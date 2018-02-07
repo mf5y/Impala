@@ -164,3 +164,8 @@ table.postForm td textarea {
   font-weight: 400;
   font-style: italic;
 }
+
+.threadIcon {
+  height: 14px;
+  padding: 0px 5px 0px 5px;
+}

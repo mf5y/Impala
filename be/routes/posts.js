@@ -28,7 +28,6 @@ module.exports.makeThread = function(req, res, next) {
     }).catch(err => {
       next(err);
     });
-
 }
 
 /* Creation of a post */

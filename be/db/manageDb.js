@@ -82,7 +82,8 @@ module.exports.addThread = function (list, properties) {
           'author': name,
           'subject': subject,
           'bump': date,
-          'bumper': name
+          'bumper': name,
+          'stickied': true
         }).then(() => {
           /* Insert post */
           return posts.insert({
@@ -172,7 +173,11 @@ module.exports.getThreads = function(list) {
       /* Get threads */
       return threads.find({
         'list': list
-      }).sort({ bump: -1 }).toArray();
+      }).sort(
+      {
+        stickied : -1,
+        bump: -1
+      }).toArray();
     });
 }
 
