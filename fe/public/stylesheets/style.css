@@ -111,7 +111,7 @@ table.postForm td textarea {
 }
 
 .boardList, .threadList {
-
+  width: 100%;
 }
 
 .boardListElement, .threadListElement {
@@ -119,9 +119,10 @@ table.postForm td textarea {
 }
 
 .boardListElementProperty, .threadListElementProperty {
-  padding: 5px;
+  padding: 10px;
   overflow: hidden;
   margin: 5px;
+  text-align: left;
 }
 
 .topBar {
@@ -138,4 +139,9 @@ table.postForm td textarea {
 
 .postContainer:target {
   background-color: #eee;
+}
+
+.quoted {
+  color: #444;
+  font-style: italic;
 }

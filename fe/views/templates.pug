@@ -8,15 +8,15 @@
     > inputPart
     > postArea
 
-mixin inputReplyForm()
+mixin inputReplyForm(captchaSvg)
   h3 Post reply
-  +inputForm()
+  +inputForm(captchaSvg)
   
-mixin inputThreadForm()
+mixin inputThreadForm(captchaSvg)
   h3 Post thread
-  +inputForm()
+  +inputForm(captchaSvg)
 
-mixin inputForm()
+mixin inputForm(captchaSvg)
   div
     form(method='post')
       table(class='postForm')
@@ -24,6 +24,15 @@ mixin inputForm()
         +inputPart('E-mail', 'userEmail', 'email')
         +inputPart('Subject', 'userSubject', 'subject')
         +postArea()
+        +captcha(captchaSvg)
+              
+mixin captcha(captchaSvg)
+  if captchaSvg
+    tr
+      td 
+        span!= captchaSvg
+      td
+        input(id='captcha' type="text" name='captcha')
               
 mixin inputPart (label, inputId, inputName)
   tr
@@ -75,9 +84,7 @@ mixin postFooter(code)
     div(class='postCode') ID: #{code}
 
 mixin postBody(body)
-  div(class='postBody')
-    each val in body
-      p!= val
+  div(class='postBody')!= body
 
 mixin postHeader(name, email, date, subject, code)
   div(class='postHeader')
@@ -93,7 +100,7 @@ mixin postHeader(name, email, date, subject, code)
 mixin postElement (elementClass, label, value)
   div(class=elementClass) 
     strong #{label}: 
-    span #{value}
+    span!= value
 
 mixin board (listName, description, owner)
   tr(class='boardListElement')
@@ -115,7 +122,12 @@ mixin board (listName, description, owner)
     > thread
 
 mixin threadListFormat(threadList)
-  table
+  table(class='threadList')
+    tr
+      th(class='threadListElementProperty') Subject
+      th(class='threadListElementProperty') Author
+      th(class='threadListElementProperty') Bump time
+      th(class='threadListElementProperty') Bumper
     each val in threadList
       +thread(val)
     
@@ -123,10 +135,10 @@ mixin thread (thread)
   tr(class='threadListElement')
     td(class='threadListElementProperty')
       a(href='/site/'+thread.list+'/'+thread.id)
-        span= thread.subject
-    td(class='threadListElementProperty')= thread.author
-    td(class='threadListElementProperty')= thread.bump
-    td(class='threadListElementProperty')= thread.bumper
+        span!= thread.subject
+    td(class='threadListElementProperty')!= thread.author
+    td(class='threadListElementProperty')!= thread.bump
+    td(class='threadListElementProperty')!= thread.bumper
 
 //-
   Top bar

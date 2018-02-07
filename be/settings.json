@@ -1,7 +1,9 @@
 {
-  "minPostSize": 64,
+  "minPostSize": 0,
   "maxPostSize": 4096,
   "maxFieldSize": 64,
   "checkEmail": true,
-  "requireSubject": true
+  "requireSubject": true,
+  "showCaptcha": true,
+  "applyFormatting": true
 }

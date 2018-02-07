@@ -23,6 +23,11 @@ function copyReply (id) {
 
   /* Add quoted material to text box */
   for (var i = 0; i < lines.length; i ++) {
+    /* Strip HTML */
+    lines[i] = lines[i].replace(/<(?:.|\n)*?>/gm, '');
+    /* Replace &gt; */
+    lines[i] = lines[i].replace(/\&gt\;/g, '>');
+    /* Add quote */
     textarea.value += ('> ' + lines[i] + '\r\n');
   }
 

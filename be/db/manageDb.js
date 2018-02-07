@@ -1,26 +1,17 @@
 var mongoClient = require('mongodb');
 var defaults = require('./defaults');
-var util = require('../util');
 var base32 = require('base32');
 var randomBytes = require('random-bytes');
-var sanitizeHtml = require('sanitize-html');
 
 const url = 'mongodb://localhost:27017';
 
-function checkDocumentExists (callback) {
-
-}
-
 /* Adds list to database */
 module.exports.addList = function (properties) {
-  /* Sanitize */
-  var propertiesSanitized = util.sanitize(properties);
-
-  var description = propertiesSanitized.owner;
-  var owner = propertiesSanitized.owner;
+  var description = properties.owner;
+  var owner = properties.owner;
 
   /* Remove special characters */
-  var name = propertiesSanitized.name.replace(/[^\w\s\.]/gi, '');
+  var name = properties.name.replace(/[^\w\s\.]/gi, '');
   /* Remove last dot */
   var parent = name.split('.').slice(0, -1).join('.');
 
@@ -52,9 +43,7 @@ module.exports.addList = function (properties) {
 }
 
 /* Removes list from database */
-module.exports.delList = function (name) {
-  /* Sanitize */
-  var nameSanitized = sanitizeHtml(name);
+module.exports.delList = function (list) {
 
   return mongoClient.connect(url)
     .then(client => {
@@ -62,7 +51,7 @@ module.exports.delList = function (name) {
       var db = client.db('local');
       var lists = db.collection('lists');
 
-      return lists.deleteOne({ 'name' : nameSanitized });
+      return lists.deleteOne({ 'name' : list });
     })
 }
 
@@ -71,18 +60,13 @@ module.exports.addThread = function (list, properties) {
   /* Random code */
   var code = base32.encode(randomBytes.sync(8));
 
-  /* Sanitize */
-  var propertiesSanitized = util.sanitize(properties);
-
-  var listSanitized = sanitizeHtml(list);
-
   /* Variables */
   var date = new Date();
 
-  var name = propertiesSanitized.name;
-  var text = propertiesSanitized.text;
-  var email = propertiesSanitized.email;
-  var subject = propertiesSanitized.subject;
+  var name = properties.name;
+  var text = properties.text;
+  var email = properties.email;
+  var subject = properties.subject;
 
   return mongoClient.connect(url)
     .then(client => {
@@ -94,7 +78,7 @@ module.exports.addThread = function (list, properties) {
       /* Insert thread */
       return threads
         .insert({
-          'list': listSanitized,
+          'list': list,
           'id': code,
           'author': name,
           'subject': subject,
@@ -103,7 +87,7 @@ module.exports.addThread = function (list, properties) {
         }).then(() => {
           /* Insert post */
           return posts.insert({
-            'list': listSanitized,
+            'list': list,
             'id': code,
             'threadID': code,
             'name': name,
@@ -112,6 +96,9 @@ module.exports.addThread = function (list, properties) {
             'subject': subject,
             'date': date
           });
+        }).then(() => {
+          /* Return code */
+          return Promise.resolve(code);
         });
     });
 }
@@ -120,19 +107,13 @@ module.exports.addPost = function (list, thread, properties) {
   /* Random code */
   var code = base32.encode(randomBytes.sync(8));
 
-  /* Sanitize */
-  var propertiesSanitized = util.sanitize(properties);
-
-  var listSanitized = sanitizeHtml(list);
-  var threadSanitized = sanitizeHtml(thread);
-
   /* Variables */
   var date = new Date();
 
-  var name = propertiesSanitized.name;
-  var text = propertiesSanitized.text;
-  var email = propertiesSanitized.email;
-  var subject = propertiesSanitized.subject;
+  var name = properties.name;
+  var text = properties.text;
+  var email = properties.email;
+  var subject = properties.subject;
 
   return mongoClient.connect(url)
     .then(client => {
@@ -143,17 +124,17 @@ module.exports.addPost = function (list, thread, properties) {
 
       /* Make sure thread exists */
       return threads.find({
-        'id': threadSanitized,
-        'list': listSanitized
+        'id': thread,
+        'list': list
       }).toArray()
         .then(threads => {
           /* If parent exists */
           if (threads.length > 0) {
             /* Add list */
             return posts.insert({
-              'list': listSanitized,
+              'list': list,
               'id': code,
-              'threadID': threadSanitized,
+              'threadID': thread,
               'name': name,
               'text': text,
               'email': email,
@@ -166,23 +147,23 @@ module.exports.addPost = function (list, thread, properties) {
         }).then(() => {
           /* Update thread */
           return threads.update({
-            'id': threadSanitized,
-            'list': listSanitized
+            'id': thread,
+            'list': list
           }, {
             $set: {
               'bump': date,
               'bumper': name
             }
           })
+        }).then(() => {
+          /* Return code */
+          return Promise.resolve(code);
         });
     });
 }
 
 /* Get threads in list */
 module.exports.getThreads = function(list) {
-  /* Sanitize */
-  var listSanitized = sanitizeHtml(list);
-
   return mongoClient.connect(url)
     .then(client => {
       /* Posts collection */
@@ -191,17 +172,13 @@ module.exports.getThreads = function(list) {
 
       /* Get threads */
       return threads.find({
-        'list': listSanitized
-      }).toArray();
+        'list': list
+      }).sort({ bump: -1 }).toArray();
     });
 }
 
 /* Get posts in thread */
 module.exports.getPosts = function(list, thread) {
-  /* Sanitize */
-  var listSanitized = sanitizeHtml(list);
-  var threadSanitized = sanitizeHtml(thread);
-
   return mongoClient.connect(url)
     .then(client => {
       /* Posts collection */
@@ -210,8 +187,8 @@ module.exports.getPosts = function(list, thread) {
 
       /* Get posts */
       return posts.find({
-        'list': listSanitized,
-        'threadID': threadSanitized
+        'list': list,
+        'threadID': thread
       }).sort({ date: 1 })
         .toArray().then(threadPosts => {
         /* If there are posts */
