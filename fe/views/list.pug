@@ -1,5 +1,7 @@
 extends layout
-include templates
+
+include templates/formTemplates
+include templates/threadTemplates
 
 block content
   +topBar('/site/')
@@ -7,5 +9,7 @@ block content
   +header(settings.name, settings.description, settings.owner)
   hr
   +inputThreadForm(captchaSvg)
+  hr
+  +boardListFormat(boardList)
   hr
   +threadListFormat(threadList)

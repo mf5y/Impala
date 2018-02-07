@@ -1,0 +1,48 @@
+//- 
+  Post elements
+  
+  Hierarchy:
+  
+  > postList
+    > post
+      > postHeader
+        > postElement
+      > postBody
+      > postFooter
+    
+mixin postListFormat(postList)
+  each val in postList
+    +post(val.name, val.email, val.text, val.date, val.subject, val.id)
+    hr
+
+mixin post(name, email, body, date, subject, code)
+  div(id=code class='postContainer')
+    div(class='ref')
+      a(href='#'+code) &gt;&gt;
+    div(class='postWrapper')
+      +postHeader(name, email, date, subject, code)
+      +postBody(body)
+      +postFooter(code)
+
+mixin postFooter(code)
+  div(class='postFooter')
+    div(class='postCode') ID: #{code}
+
+mixin postBody(body)
+  div(class='postBody')!= body
+
+mixin postHeader(name, email, date, subject, code)
+  div(class='postHeader')
+    div(class='postOptions')
+      a(class='postOption' href='#text' onclick='copyReply(\''+code+'\');')
+        span Reply
+      a(class='postOption' href='#postText')
+        span Report
+    +postElement('postName', 'Name', name+' ['+email+']')
+    +postElement('postDate', 'Date', date)
+    +postElement('postSubject', 'Subject', subject)
+    
+mixin postElement (elementClass, label, value)
+  div(class=elementClass) 
+    strong #{label}: 
+    span!= value

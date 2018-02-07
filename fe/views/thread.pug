@@ -1,5 +1,7 @@
 extends layout
-include templates
+
+include templates/formTemplates
+include templates/postTemplates
 
 block content
   +topBar('/site/'+settings.name)
