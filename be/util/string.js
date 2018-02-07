@@ -17,11 +17,17 @@ function quoted (str) {
   return '<span class=\'quoted\'>' + str + '</span>';
 }
 
+function spoiler (str) {
+  var substr = str.substring(9, str.length - 10);
+  return '<span class=\'spoiler\'>' + substr + '</span>';
+}
+
 function formatString (str) {
   str = str.replace(/^&gt;(.*?)$/g, quoted);
   str = str.replace(/\'\'\'(.*?)\'\'\'/g, italics);
   str = str.replace(/\'\'(.*?)\'\'/g, bold);
   str = str.replace(/~~(.*?)~~/g, strikethrough);
+  str = str.replace(/\[spoiler\](.*?)\[\/spoiler\]/g, spoiler);
 
   return str;
 }

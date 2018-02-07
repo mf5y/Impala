@@ -145,3 +145,11 @@ table.postForm td textarea {
   color: #444;
   font-style: italic;
 }
+
+.spoiler {
+  background-color: #000;
+}
+
+.spoiler:hover {
+  background-color: transparent;
+}
