@@ -69,3 +69,43 @@ module.exports.logIn = function (req, res, next) {
       next(err);
     })
 }
+
+module.exports.lockThread = function (req, res, next) {
+  var list = req.params.list;
+  var thread = req.params.thread;
+
+  manageDb.lockThread(list, thread)
+    .then(() => {
+      res.redirect();
+    });
+}
+
+module.exports.unlockThread = function (req, res, next) {
+  var list = req.params.list;
+  var thread = req.params.thread;
+
+  manageDb.unlockThread(list, thread)
+    .then(() => {
+      res.redirect();
+    });
+}
+
+module.exports.stickyThread = function (req, res, next) {
+  var list = req.params.list;
+  var thread = req.params.thread;
+
+  manageDb.stickyThread(list, thread)
+    .then(() => {
+      res.redirect('');
+    });
+}
+
+module.exports.unstickyThread = function (req, res, next) {
+  var list = req.params.list;
+  var thread = req.params.thread;
+
+  manageDb.unstickyThread(list, thread)
+    .then(() => {
+      res.redirect();
+    });
+}

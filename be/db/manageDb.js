@@ -267,7 +267,7 @@ module.exports.getListSettings = function(list) {
 }
 
 /* Get user data */
-module.exports.getUserInfo = function(username) {
+module.exports.getUserInfo = function (username) {
   return mongoClient.connect(url)
     .then(client => {
       /* Users collection */
@@ -287,9 +287,29 @@ module.exports.getUserInfo = function(username) {
     });
 }
 
+module.exports.getThreadInfo = function (list, thread) {
+  return mongoClient.connect(url)
+    .then(client => {
+      /* Threads collection */
+      var db = client.db('local');
+      var threads = db.collection('threads');
+
+      return threads.find({
+        'list': list,
+        'id': thread
+      }).toArray().then(threads => {
+        /* If there is a user */
+        if (threads.length > 0) {
+          return Promise.resolve(threads[0]);
+        }
+        /* Otherwise error */
+        else return Promise.reject(new Error ('Thread not found!'));
+      });
+    });
+}
+
 /* Removes list from database */
 module.exports.delList = function (list) {
-
   return mongoClient.connect(url)
     .then(client => {
       /* Lists collection */
@@ -298,4 +318,84 @@ module.exports.delList = function (list) {
 
       return lists.deleteOne({ 'name' : list });
     })
+}
+
+module.exports.lockThread = function (list, thread) {
+  return mongoClient.connect(url)
+    .then(client => {
+      /* Threads collection */
+      var db = client.db('local');
+      var threads = db.collection('threads');
+
+      return threads.update({
+        'list': list,
+        'id': thread
+      }, {
+        'locked': true
+      });
+    });
+}
+
+module.exports.unlockThread = function (list, thread) {
+  return mongoClient.connect(url)
+    .then(client => {
+      /* Threads collection */
+      var db = client.db('local');
+      var threads = db.collection('threads');
+
+      return threads.update({
+        'list': list,
+        'id': thread
+      }, { $set: {
+        'locked': false
+      }});
+    });
+}
+
+module.exports.lockThread = function (list, thread) {
+  return mongoClient.connect(url)
+    .then(client => {
+      /* Threads collection */
+      var db = client.db('local');
+      var threads = db.collection('threads');
+
+      return threads.update({
+        'list': list,
+        'id': thread
+      }, { $set: {
+        'locked': true
+      }});
+    });
+}
+
+module.exports.stickyThread = function (list, thread) {
+  return mongoClient.connect(url)
+    .then(client => {
+      /* Threads collection */
+      var db = client.db('local');
+      var threads = db.collection('threads');
+
+      return threads.update({
+        'list': list,
+        'id': thread
+      }, { $set: {
+        'stickied': true
+      }});
+    });
+}
+
+module.exports.unstickyThread = function (list, thread) {
+  return mongoClient.connect(url)
+    .then(client => {
+      /* Threads collection */
+      var db = client.db('local');
+      var threads = db.collection('threads');
+
+      return threads.update({
+        'list': list,
+        'id': thread
+      }, { $set: {
+        'stickied': false
+      }});
+    });
 }

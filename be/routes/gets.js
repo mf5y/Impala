@@ -50,6 +50,12 @@ module.exports.threadPage = function(req, res, next) {
     req.renderProperties.settings = req.settings;
     req.renderProperties.captcha = req.captcha;
 
+    /* Get thread info */
+    return manageDb.getThreadInfo(list, thread);
+  }).then((threadInfo) => {
+    /* Set property */
+    req.renderProperties.threadInfo = threadInfo;
+
     /* Next middleware */
     next();
   }).catch(err => {

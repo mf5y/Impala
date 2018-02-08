@@ -51,4 +51,9 @@ router.post('/site/:list/:thread/', postsRoutes.makePost);
 router.post('/login/', postsRoutes.logIn);
 router.post('/login/create', postsRoutes.makeAccount);
 
+router.post('/site/:list/:thread/lock', postsRoutes.lockThread);
+router.post('/site/:list/:thread/unlock', postsRoutes.unlockThread);
+router.post('/site/:list/:thread/sticky', postsRoutes.stickyThread);
+router.post('/site/:list/:thread/unsticky', postsRoutes.unstickyThread);
+
 module.exports = router;
