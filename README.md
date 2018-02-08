@@ -14,7 +14,7 @@ Express.js forum
 
 - [ ] Add management options
 - [ ] Re-write front-end to be less messy and look better
-- [ ] Add permission checking middleware
+- [x] Add permission checking middleware
 
 
 ## Writing a front-end
