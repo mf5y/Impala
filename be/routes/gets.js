@@ -25,6 +25,7 @@ module.exports.listPage = function(req, res, next) {
     /* Set misc properties */
     req.renderProperties.settings = req.settings;
     req.renderProperties.captcha = req.captcha;
+    req.renderProperties.userinfo = req.userinfo;
 
     /* Next middleware */
     next();
@@ -49,6 +50,7 @@ module.exports.threadPage = function(req, res, next) {
     /* Set misc properties */
     req.renderProperties.settings = req.settings;
     req.renderProperties.captcha = req.captcha;
+    req.renderProperties.userinfo = req.userinfo;
 
     /* Get thread info */
     return manageDb.getThreadInfo(list, thread);
