@@ -2,15 +2,7 @@ var manageDb = require('../db/manageDb');
 
 /* Creation of a list */
 module.exports.makeList = function(req, res, next) {
-  var list = req.body.list;
-  var description = req.body.description;
-  var owner = req.body.owner;
-
-  manageDb.addList({
-      'name': list,
-      'description': description,
-      'owner': owner
-    }).then(b => {
+  manageDb.addList(req.body).then(b => {
       res.render('index');
     }).catch(err => {
       /* If error, forward it */
