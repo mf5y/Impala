@@ -3,6 +3,7 @@ var router = express.Router();
 
 var postsRoutes = require('./posts');
 var getsRoutes = require('./gets');
+var deletesRoutes = require('./deletes');
 var middleware = require('./middleware');
 
 /* Sanitize user sent input */
@@ -45,6 +46,9 @@ router.post(['/site/:list', '/site/:list/:thread'], middleware.applyFormatting);
 router.post('/login/create', middleware.hashPassword);
 
 /* Permissions */
+router.delete('/site/:list/:thread/', middleware.assertPermissions('deleteLevel'));
+router.delete('/site/:list/:thread/:id/', middleware.assertPermissions('deleteLevel'));
+
 router.post('/site', middleware.assertPermissions('listCreationLevel'));
 router.post('/site/:list/', middleware.assertPermissions('threadCreationLevel'));
 router.post('/site/:list/:thread/', middleware.assertPermissions('postCreationLevel'));
@@ -66,5 +70,9 @@ router.post('/site/:list/:thread/lock', postsRoutes.lockThread);
 router.post('/site/:list/:thread/unlock', postsRoutes.unlockThread);
 router.post('/site/:list/:thread/sticky', postsRoutes.stickyThread);
 router.post('/site/:list/:thread/unsticky', postsRoutes.unstickyThread);
+
+/* Process DELETEs */
+router.delete('/site/:list/:thread/', deletesRoutes.deleteThread);
+router.delete('/site/:list/:thread/:id/', deletesRoutes.deletePost);
 
 module.exports = router;

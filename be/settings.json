@@ -8,11 +8,13 @@
   "applyFormatting": true,
 
   "listCreationLevel": "mod",
-  "threadCreationLevel": "mod",
+  "threadCreationLevel": "user",
   "postCreationLevel": "user",
 
   "lockLevel": "mod",
   "stickyLevel": "mod",
+
+  "deleteLevel": "mod",
 
   "anonymousName": "Anonymous"
 }

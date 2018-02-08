@@ -309,7 +309,7 @@ module.exports.getThreadInfo = function (list, thread) {
 }
 
 /* Removes list from database */
-module.exports.delList = function (list) {
+module.exports.deleteList = function (list) {
   return mongoClient.connect(url)
     .then(client => {
       /* Lists collection */
@@ -397,5 +397,41 @@ module.exports.unstickyThread = function (list, thread) {
       }, { $set: {
         'stickied': false
       }});
+    });
+}
+
+module.exports.deleteThread = function (list, thread) {
+  return mongoClient.connect(url)
+    .then(client => {
+      /* Threads collection */
+      var db = client.db('local');
+      var threads = db.collection('threads');
+      var posts = db.collection('posts');
+
+
+      return threads.deleteOne({
+        'list': list,
+        'id': thread
+      }).then(() => {
+        return posts.deleteMany({
+          'list': list,
+          'parentID': thread
+        });
+      });
+    });
+}
+
+module.exports.deletePost = function (list, thread, id) {
+  return mongoClient.connect(url)
+    .then(client => {
+      /* Posts collection */
+      var db = client.db('local');
+      var posts = db.collection('posts');
+
+      return posts.deleteOne({
+        'list': list,
+        'parentID': thread,
+        'id': id
+      });
     });
 }
