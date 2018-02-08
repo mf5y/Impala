@@ -9,6 +9,7 @@
     "base32": "0.0.6",
     "base64-js": "^1.2.1",
     "base64js": "^1.0.1",
+    "bcrypt": "^1.0.3",
     "body-parser": "~1.18.2",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",

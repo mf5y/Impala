@@ -1,8 +1,9 @@
 var defaultSettings = require('../settings.json');
-var util = require('../util/general.js');
-var stringUtil = require('../util/string.js');
+var util = require('../util/general');
+var stringUtil = require('../util/string');
 var svgCaptcha = require('svg-captcha');
 var nodeCache = require('node-cache');
+var userCrypt = require('../util/usercrypt')
 var manageDb = require('../db/manageDb');
 
 const captchaSettings = {
@@ -13,6 +14,10 @@ const captchaSettings = {
 var settingsCache = new nodeCache({
   stdTTL: 600 /* Ten minute cache */
 });
+
+var usersCache = new nodeCache({
+  stdTTL: 3600 /* Hour long cache */
+})
 
 module.exports.getSettings = function (req, res, next) {
   var list = req.params.list;
@@ -165,4 +170,60 @@ module.exports.render = function (req, res, next) {
 
   /* Render */
   res.render(template, properties);
+}
+
+module.exports.hashPassword = function (req, res, next) {
+    /* Hash password */
+    userCrypt.hashPassword(req.body.password)
+      .then(hash => {
+        /* Save hashed password */
+        req.body.passhash = hash;
+
+        /* Continue */
+        next();
+      });
+}
+
+module.exports.verifyUserInfo = function (req, res, next) {
+  if (!req.session.userinfo) {
+    /* If user isn't logged in, no user info */
+    req.userinfo = {};
+
+    next();
+  }
+  else {
+    var username = req.session.userinfo.username;
+    var passhash = req.session.userinfo.passhash;
+
+    /* Check cache */
+    var cachedUserInfo = userCache.get(username);
+
+    /* Miss */
+    if (cachedUserInfo == undefined) {
+      manageDb.getUserInfo(username)
+        .then(info => {
+          /* If password is correct, set userinfo */
+          if (passhash == info.passhash) {
+            /* Set info */
+            req.userinfo = info;
+
+            /* Store in cache */
+            userCache.set(username, info);
+
+            /* Continue */
+            next();
+          }
+
+          else req.userinfo = { };
+        });
+    }
+
+    /* Hit */
+    else {
+      req.userinfo = cachedUserInfo;
+
+      /* Continue */
+      next();
+    }
+  }
 }

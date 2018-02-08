@@ -16,7 +16,7 @@ module.exports.listPage = function(req, res, next) {
     /* Set threads property */
     req.renderProperties.threads = threads;
 
-    /* Get lists */
+    /* Get lists *
     return manageDb.getLists(list);
   }).then(lists => {
     /* Set lists property */
@@ -59,5 +59,9 @@ module.exports.threadPage = function(req, res, next) {
 }
 
 module.exports.loginPage = function(req, res, next) {
+  res.render('login');
+}
+
+module.exports.signupPage = function(req, res, next) {
   res.render('login');
 }

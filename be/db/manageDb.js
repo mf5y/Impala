@@ -115,11 +115,11 @@ module.exports.addPost = function (list, thread, properties) {
         'id': thread,
         'list': list
       }).toArray()
-        .then(threads => {
+        .then(threadsFound => {
           /* If parent exists */
-          if (threads.length == 1) {
+          if (threadsFound.length == 1) {
             /* And isn't locked */
-            if (!threads[0].locked) {
+            if (!threadsFound[0].locked) {
               /* Add post */
               return posts.insert({
                 'list': list,
@@ -151,6 +151,35 @@ module.exports.addPost = function (list, thread, properties) {
         }).then(() => {
           /* Return code */
           return Promise.resolve(code);
+        });
+    });
+}
+
+
+module.exports.addUser = function (properties) {
+  var username = properties.username;
+  var passhash = properties.passhash;
+
+  return mongoClient.connect(url)
+    .then(client => {
+      /* Users collection */
+      var db = client.db('local');
+      var users = db.collection('users');
+
+      return users.find({
+        'username' : username
+      }).toArray()
+        .then(usersFound => {
+            /* Make sure user doesn't exist already*/
+          if (usersFound.length == 0) {
+            return users.insert({
+              'username' : username,
+              'passhash' : passhash,
+              'type' : 'user'
+            });
+          }
+          /* Otherwise throw error */
+          else return Promise.reject(new Error ('Username taken!'));
         });
     });
 }
@@ -238,22 +267,22 @@ module.exports.getListSettings = function(list) {
 }
 
 /* Get user data */
-module.exports.getUserData = function(name) {
+module.exports.getUserInfo = function(username) {
   return mongoClient.connect(url)
     .then(client => {
       /* Users collection */
       var db = client.db('local');
       var users = db.collection('users');
 
-      return lists.find({
-        'name': name
+      return users.find({
+        'username': username
       }).toArray().then(users => {
         /* If there is a user */
         if (users.length > 0) {
           return Promise.resolve(users[0]);
         }
         /* Otherwise error */
-        else return Promise.reject(new Error ('List not found!'));
+        else return Promise.reject(new Error ('User not found!'));
       });
     });
 }
