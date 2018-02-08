@@ -76,7 +76,7 @@ module.exports.lockThread = function (req, res, next) {
 
   manageDb.lockThread(list, thread)
     .then(() => {
-      res.redirect();
+      res.redirect('');
     });
 }
 
@@ -86,7 +86,7 @@ module.exports.unlockThread = function (req, res, next) {
 
   manageDb.unlockThread(list, thread)
     .then(() => {
-      res.redirect();
+      res.redirect('');
     });
 }
 
@@ -106,6 +106,6 @@ module.exports.unstickyThread = function (req, res, next) {
 
   manageDb.unstickyThread(list, thread)
     .then(() => {
-      res.redirect();
+      res.redirect('');
     });
 }

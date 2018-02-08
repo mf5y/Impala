@@ -18,5 +18,5 @@ module.exports.hasAdequatePrivileges = function (privilege, target) {
   const privilegeLevels = ['user', 'mod', 'admin'];
 
   /* True if privilege is greater than or equal to target */
-  return privilegeLevels.indexof(privilege) >= privilegeLevels.indexof(target);
+  return privilegeLevels.indexOf(privilege) >= privilegeLevels.indexOf(target);
 }

@@ -263,3 +263,16 @@ module.exports.applyNameFormatting = function (req, res, next) {
   /* Continue */
   next();
 }
+
+module.exports.assertPermissions = function (permission) {
+  return function (req, res, next) {
+    var userPrivilege = req.userinfo.type;
+    var targetPrivilege = req.settings[permission];
+
+    if (util.hasAdequatePrivileges(userPrivilege, targetPrivilege)) {
+      /* Continue */
+      next();
+    }
+    else next(new Error('You must be a ' + targetPrivilege + ' to do that.'));
+  }
+}

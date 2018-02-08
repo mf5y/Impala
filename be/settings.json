@@ -7,8 +7,12 @@
   "showCaptcha": true,
   "applyFormatting": true,
 
-  "boardCreationLevel": "user",
+  "listCreationLevel": "mod",
   "threadCreationLevel": "mod",
+  "postCreationLevel": "user",
+
+  "lockLevel": "mod",
+  "stickyLevel": "mod",
 
   "anonymousName": "Anonymous"
 }

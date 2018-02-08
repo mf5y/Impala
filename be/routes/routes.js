@@ -9,7 +9,7 @@ var middleware = require('./middleware');
 router.use(middleware.sanitizeProperties);
 
 /* Get settings and user info */
-router.all(['/site/:list', '/site/:list/:thread'], middleware.getSettings);
+router.all(['/site/:list*'], middleware.getSettings);
 
 /* GETs */
 
@@ -18,6 +18,7 @@ router.get(['/site/:list', '/site/:list/:thread'], middleware.generateCaptcha);
 
 /* Process GETs */
 router.get('/', getsRoutes.homePage);
+//router.get('/site/', getRoutes.directoryPage);
 router.get('/site/:list/', getsRoutes.listPage);
 router.get('/site/:list/:thread/', getsRoutes.threadPage);
 
@@ -30,7 +31,7 @@ router.get('/*', middleware.render);
 /* POSTs */
 
 /* Error checking functions */
-router.post(['/site/', '/site/:list', '/site/:list/:thread'], middleware.verifyUserInfo);
+router.post(['/site/*'], middleware.verifyUserInfo);
 
 router.post(['/site/:list', '/site/:list/:thread'], middleware.checkPost);
 router.post(['/site/:list', '/site/:list/:thread'], middleware.checkCaptcha);
@@ -42,6 +43,16 @@ router.post(['/site/:list', '/site/:list/:thread'], middleware.applyFormatting);
 
 /* Hash password in sign up */
 router.post('/login/create', middleware.hashPassword);
+
+/* Permissions */
+router.post('/site', middleware.assertPermissions('listCreationLevel'));
+router.post('/site/:list/', middleware.assertPermissions('threadCreationLevel'));
+router.post('/site/:list/:thread/', middleware.assertPermissions('postCreationLevel'));
+
+router.post('/site/:list/:thread/lock', middleware.assertPermissions('lockLevel'));
+router.post('/site/:list/:thread/unlock', middleware.assertPermissions('lockLevel'));
+router.post('/site/:list/:thread/sticky', middleware.assertPermissions('stickyLevel'));
+router.post('/site/:list/:thread/unsticky', middleware.assertPermissions('stickyLevel'));
 
 /* Process POSTs */
 router.post('/site', postsRoutes.makeList);
