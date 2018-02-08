@@ -5,5 +5,10 @@
   "checkEmail": true,
   "requireSubject": true,
   "showCaptcha": true,
-  "applyFormatting": true
+  "applyFormatting": true,
+
+  "boardCreationLevel": "user",
+  "threadCreationLevel": "mod",
+
+  "anonymousName": "Anonymous"
 }

@@ -30,13 +30,14 @@ router.get('/*', middleware.render);
 /* POSTs */
 
 /* Error checking functions */
-router.post(['/site/, /site/:list', '/site/:list/:thread'], middleware.verifyUserInfo);
+router.post(['/site/', '/site/:list', '/site/:list/:thread'], middleware.verifyUserInfo);
 
 router.post(['/site/:list', '/site/:list/:thread'], middleware.checkPost);
 router.post(['/site/:list', '/site/:list/:thread'], middleware.checkCaptcha);
 router.post(['/site/:list', '/site/:list/:thread'], middleware.invalidateCaptcha);
 
 /* Modifying functions */
+router.post(['/site/:list', '/site/:list/:thread'], middleware.applyNameFormatting);
 router.post(['/site/:list', '/site/:list/:thread'], middleware.applyFormatting);
 
 /* Hash password in sign up */

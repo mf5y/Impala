@@ -16,7 +16,7 @@ module.exports.listPage = function(req, res, next) {
     /* Set threads property */
     req.renderProperties.threads = threads;
 
-    /* Get lists *
+    /* Get lists */
     return manageDb.getLists(list);
   }).then(lists => {
     /* Set lists property */
@@ -24,7 +24,7 @@ module.exports.listPage = function(req, res, next) {
 
     /* Set misc properties */
     req.renderProperties.settings = req.settings;
-    req.renderProperties.svgCaptcha = req.captcha;
+    req.renderProperties.captcha = req.captcha;
 
     /* Next middleware */
     next();

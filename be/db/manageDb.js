@@ -48,7 +48,7 @@ module.exports.addThread = function (list, properties) {
   /* Variables */
   var date = new Date();
 
-  var name = properties.name;
+  var username = properties.username;
   var text = properties.text;
   var email = properties.email;
   var subject = properties.subject;
@@ -65,19 +65,19 @@ module.exports.addThread = function (list, properties) {
         .insert({
           'list': list,
           'id': code,
-          'author': name,
+          'author': username,
           'subject': subject,
           'bump': date,
-          'bumper': name,
+          'bumper': username,
           'stickied': false,
-          'locked': true
+          'locked': false
         }).then(() => {
           /* Insert post */
           return posts.insert({
             'list': list,
             'id': code,
             'threadID': code,
-            'name': name,
+            'author': username,
             'text': text,
             'email': email,
             'subject': subject,
@@ -98,7 +98,7 @@ module.exports.addPost = function (list, thread, properties) {
   /* Variables */
   var date = new Date();
 
-  var name = properties.name;
+  var username = properties.username;
   var text = properties.text;
   var email = properties.email;
   var subject = properties.subject;
@@ -125,7 +125,7 @@ module.exports.addPost = function (list, thread, properties) {
                 'list': list,
                 'id': code,
                 'threadID': thread,
-                'name': name,
+                'author': username,
                 'text': text,
                 'email': email,
                 'subject': subject,
@@ -145,7 +145,7 @@ module.exports.addPost = function (list, thread, properties) {
           }, {
             $set: {
               'bump': date,
-              'bumper': name
+              'bumper': username
             }
           })
         }).then(() => {
