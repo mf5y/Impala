@@ -8,6 +8,11 @@ a {
   color: #00B7FF;
 }
 
+.user {
+  color: #008822;
+  font-weight: 600;
+}
+
 /* Post container */
 .postContainer {
   padding: 6px;

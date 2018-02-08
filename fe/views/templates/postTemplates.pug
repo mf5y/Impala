@@ -12,7 +12,7 @@
     
 mixin postListFormat(postList)
   each val in postList
-    +post(val.name, val.email, val.text, val.date, val.subject, val.id)
+    +post(val.author, val.email, val.text, val.date, val.subject, val.id)
     hr
 
 mixin post(name, email, body, date, subject, code)

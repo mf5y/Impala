@@ -5,6 +5,7 @@ var svgCaptcha = require('svg-captcha');
 var nodeCache = require('node-cache');
 var userCrypt = require('../util/usercrypt')
 var manageDb = require('../db/manageDb');
+var crypto = require('crypto');
 
 const captchaSettings = {
   size : 6,
@@ -196,7 +197,7 @@ module.exports.verifyUserInfo = function (req, res, next) {
     var passhash = req.session.userinfo.passhash;
 
     /* Check cache */
-    var cachedUserInfo = userCache.get(username);
+    var cachedUserInfo = usersCache.get(username);
 
     /* Miss */
     if (cachedUserInfo == undefined) {
@@ -208,7 +209,7 @@ module.exports.verifyUserInfo = function (req, res, next) {
             req.userinfo = info;
 
             /* Store in cache */
-            userCache.set(username, info);
+            usersCache.set(username, info);
 
             /* Continue */
             next();
@@ -226,4 +227,39 @@ module.exports.verifyUserInfo = function (req, res, next) {
       next();
     }
   }
+}
+
+module.exports.applyNameFormatting = function (req, res, next) {
+  /* Signed in */
+  if (req.userinfo.username != undefined) {
+    /* If no username */
+    if (req.body.username == '') {
+      req.body.username = req.settings.anonymousName;
+    }
+
+    /* If auto */
+    if (req.body.username == 'auto' ) {
+      req.body.username = '<span class=\'user\'>' + req.userinfo.username + '</span>';
+    }
+
+    /* Otherwise use the name and hash the tripcode part */
+    else req.body.username = req.body.username.replace(/#.*$/g, function (str) {
+      return '#' + crypto.createHash('sha256').update(str).digest("base64").substr(0, 8);
+    });
+  }
+
+  else {
+    /* If no username */
+    if (req.body.username == '') {
+      req.body.username = req.settings.anonymousName;
+    }
+
+    /* Otherwise use the name and hash the tripcode part */
+    else req.body.username = req.body.username.replace(/#.*$/g, function (str) {
+      return '#' + crypto.createHash('sha256').update(str).digest("base64").substr(0, 8);
+    });
+  }
+
+  /* Continue */
+  next();
 }

@@ -13,3 +13,10 @@ module.exports.sanitize = function (properties) {
 
   return properties;
 }
+
+module.exports.hasAdequatePrivileges = function (privilege, target) {
+  const privilegeLevels = ['user', 'mod', 'admin'];
+
+  /* True if privilege is greater than or equal to target */
+  return privilegeLevels.indexof(privilege) >= privilegeLevels.indexof(target);
+}
