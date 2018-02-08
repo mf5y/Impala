@@ -46,3 +46,35 @@ mixin postElement (elementClass, label, value)
   div(class=elementClass) 
     strong #{label}: 
     span!= value
+
+    
+mixin lockedNotice (locked) 
+  if locked
+    div(class='notice') This thread is locked.
+    hr
+      
+mixin adminTools (locked, stickied, id)
+    div
+      +lockThread(locked, id)
+      +stickyThread(stickied, id)
+    
+
+mixin stickyThread (stickied, id)
+  if stickied
+    form(action=id+"/unsticky" method="post")
+      input(id='submit' type='submit' name='submit' value='Unsticky')
+  else
+    form(action=id+"/sticky" method="post")
+      input(id='submit' type='submit' name='submit' value='Sticky')
+    
+
+
+    
+mixin lockThread (locked, id)
+  if locked
+    form(action=id+"/unlock" method="post")
+      input(id='submit' type='submit' name='submit' value='Unlock')
+  else
+    form(action=id+"/lock" method="post")
+      input(id='submit' type='submit' name='submit' value='Lock')
+    

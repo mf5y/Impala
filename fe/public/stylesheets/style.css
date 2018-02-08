@@ -4,6 +4,13 @@ body {
   background-color:
 }
 
+.notice {
+  font-size: 42px;
+  color: #cc2200;
+  font-weight: 600;
+  text-align: center;
+}
+
 a {
   color: #00B7FF;
 }

@@ -10,4 +10,6 @@ block content
   hr
   +inputReplyForm(captcha)
   hr
+  +lockedNotice(threadInfo.locked)
+  +adminTools(threadInfo.locked, threadInfo.stickied, threadInfo.id)
   +postListFormat(posts)
