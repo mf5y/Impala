@@ -17,7 +17,7 @@ Express.js forum
 - [x] Add permission checking middleware
 
 ## Screenshot
-![shot.png](Screenshot)
+![Screenshot](shot.png)
 
 ## Features
 - Administration tools
