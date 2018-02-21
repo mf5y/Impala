@@ -8,8 +8,8 @@
   "applyFormatting": true,
 
   "listCreationLevel": "mod",
-  "threadCreationLevel": "user",
-  "postCreationLevel": "user",
+  "threadCreationLevel": "none",
+  "postCreationLevel": "none",
 
   "lockLevel": "mod",
   "stickyLevel": "mod",

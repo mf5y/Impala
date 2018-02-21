@@ -1,0 +1,77 @@
+mixin lists-table(lists)
+  div(class='info-container' id='lists-container')
+    table(class='info-table' id='lists-table')
+      tr(class='info-tr info-tr-title')
+        td(class='info-td info-td-title'  colspan='3') Sublists
+      tr(class='info-tr info-tr-head')
+        td(class='info-td info-td-head')
+          span Name
+        td(class='info-td info-td-head')
+          span Description
+        td(class='info-td info-td-head')
+          span Owner
+      each list in lists
+        +list-entry(list)
+        
+mixin list-entry (list)
+  tr(class='info-tr')
+    td(class='info-td')
+      a(href='/site/'+list.name)= list.name
+    td(class='info-td')= list.description
+    td(class='info-td')= list.owner
+
+mixin threads-table (threads, settings, userinfo)
+  div(class='info-container' id='threads-container')
+    table(class='info-table' id='threads-table')
+      tr(class='info-tr info-tr-title')
+        td(class='info-td info-td-title' colspan='4') Threads
+      tr(class='info-tr info-tr-head')
+        td(class='info-td info-td-head')
+        td(class='info-td info-td-head')
+          span Subject
+        td(class='info-td info-td-head')
+          span Author / Date
+        td(class='info-td info-td-head')
+          span Latest post
+      each thread in threads
+        +threads-entry(thread, settings, userinfo)
+
+mixin threads-entry (thread, settings, userinfo)
+  tr(class='info-tr')
+      td(class='info-td')
+        span(class='thread-status-icons')
+          +threads-icons(thread, settings, userinfo)
+      td(class='info-td') 
+        a(href='/site/'+settings.name+'/'+thread.id)!= thread.subject
+      td(class='info-td')!= thread.author
+      td(class='info-td')
+        span!= thread.bumper
+        div(class='smalltext greyed')!= thread.bump
+
+mixin threads-icons(thread, settings, userinfo)
+  if userinfo
+    if userinfo.type == 'mod' || userinfo.type == 'admin'
+      if thread.locked
+        form(class='icon-form' name='toggle-lock-'+thread.id method='post' action='/site/'+settings.name+'/'+thread.id+'/unlock')
+          a(href='javascript:toggleLock(\''+thread.id+'\')')
+            i(class='fa fa-lock thread-status-icon-admin')
+      else
+        form(class='icon-form' name='toggle-lock-'+thread.id method='post' action='/site/'+settings.name+'/'+thread.id+'/lock')
+          a(href='javascript:toggleLock(\''+thread.id+'\')')
+            i(class='fa fa-lock thread-status-icon-admin greyed')
+      if thread.stickied
+        form(class='icon-form' name='toggle-sticky-'+thread.id method='post' action='/site/'+settings.name+'/'+thread.id+'/unsticky')
+          a(href='javascript:toggleSticky(\''+thread.id+'\')')
+            i(class='fa fa-bullhorn thread-status-icon-admin')
+      else
+        form(class='icon-form' name='toggle-sticky-'+thread.id method='post' action='/site/'+settings.name+'/'+thread.id+'/sticky')
+          a(href='javascript:toggleSticky(\''+thread.id+'\')')
+            i(class='fa fa-bullhorn thread-status-icon-admin greyed')
+      form(class='icon-form' name='delete-'+thread.id method='post' action='/site/'+settings.name+'/'+thread.id+'/delete')
+        a(href='javascript:deleteThread(\''+thread.id+'\')')
+          i(class='fa fa-times thread-status-icon-admin greyed')
+  else
+    if thread.locked
+      i(class='fa fa-lock thread-status-icon')
+    if thread.stickied
+      i(class='fa fa-bullhorn thread-status-icon')

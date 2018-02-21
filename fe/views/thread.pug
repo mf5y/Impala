@@ -1,15 +1,12 @@
-extends layout
+extends layouts/site
 
-include templates/formTemplates
-include templates/postTemplates
+include templates/form
+include templates/nav
+include templates/post
 
-block content
-  +topBar('/site/'+settings.name)
-  hr
-  +header(settings.name, settings.description, settings.owner)
-  hr
-  +inputReplyForm(captcha)
-  hr
-  +lockedNotice(threadInfo.locked)
-  +adminTools(threadInfo.locked, threadInfo.stickied, threadInfo.id)
-  +postListFormat(posts)
+block navbar
+  +navbar(userinfo)
+  
+block main
+  +post-form(settings, captcha)
+  +thread-container(posts)

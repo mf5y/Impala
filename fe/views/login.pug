@@ -1,9 +1,10 @@
-extends layout
+extends layouts/site
 
-include templates/loginTemplates
+include templates/nav
+include templates/form
 
-block content
-  +topBar('/site/')
-  hr
-  h3 Login
-  +loginForm()
+block navbar
+  +navbar(null)
+
+block main
+  +login-form()

@@ -1,0 +1,95 @@
+mixin list-form (settings, captcha)
+  div(id='post-form-container')
+    form(id='post-form-form' method='post')
+      div(id='post-form-div')
+        div(id='post-form-title'  )
+          h1 New list
+        div(id='post-form-table-div')
+          table(id='post-form-table')
+
+
+mixin thread-form (settings, captcha)
+  div(id='post-form-container')
+    form(id='post-form-form' method='post')
+      div(id='post-form-div')
+        div(id='post-form-title')
+          h1 Post Thread
+        div(id='post-form-table-div')
+          table(id='post-form-table')
+            +username-form-element()
+            +subject-form-element()
+            +email-form-element()
+            +captcha-form-element(settings, captcha)
+            +content-form-element()
+            +captcha-display-element(settings, captcha)
+            +submit-form-element()
+
+mixin post-form (settings, captcha)
+  div(id='post-form-container')
+    form(id='post-form-form' method='post')
+      div(id='post-form-div')
+        div(id='post-form-title')
+          h1 Post Reply
+        div(id='post-form-table-div')
+          table(id='post-form-table')
+            +username-form-element()
+            +subject-form-element()
+            +email-form-element()
+            +captcha-form-element(settings, captcha)
+            +content-form-element()
+            +captcha-display-element(settings, captcha)
+            +submit-form-element()
+            
+mixin login-form ()
+  div(id='post-form-container')
+    form(id='post-form-form' method='post')
+      div(id='post-form-div')
+        div(id='post-form-title')
+          h1 Login
+        div(id='post-form-table-div')
+          table(id='post-form-table')
+            +username-form-element()
+            +password-form-element()
+            +submit-form-element()
+            
+mixin username-form-element ()
+  tr(class='post-form-tr')
+    td(class='post-form-td')
+      input(type="text", name="username" placeholder="Name")
+  
+mixin subject-form-element ()
+  tr(class='post-form-tr')  
+    td(class='post-form-td')
+      input(type="text", name="subject" placeholder="Subject")
+        
+mixin email-form-element ()
+  tr(class='post-form-tr')
+    td(class='post-form-td')
+      input(type="text", name="email" placeholder="E-mail")
+        
+mixin captcha-form-element (settings, captcha)
+  if settings.showCaptcha
+    tr(class='post-form-tr')
+      td(class='post-form-td')
+        input(type="text", name="captcha" placeholder="Captcha")
+          
+mixin content-form-element ()
+  tr(class='post-form-tr')
+    td(class='post-form-td')
+      textarea(name="text" rows='10' placeholder="Post content")
+        
+mixin captcha-display-element (settings, captcha)
+  if settings.showCaptcha
+    tr(class='post-form-tr')
+      td(class='post-form-td')
+        span!= captcha
+
+mixin submit-form-element ()
+  tr(class='post-form-tr')
+    td(class='post-form-td')
+      input(class='submit' type='submit' name='submit' value='Submit')
+        
+mixin password-form-element ()
+  tr(class='post-form-tr')
+    td(class='post-form-td')
+      input(type='password' name='password' value='Password')

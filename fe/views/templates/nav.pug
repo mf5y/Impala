@@ -1,0 +1,14 @@
+mixin navbar (userinfo)
+  div(id='navbar')
+    div(id='left-navbar')
+      a(href='')
+        i(class='fa fa-angle-double-left')
+    div(id='right-navbar')
+      if userinfo
+        span(class='user')= userinfo.username
+        span  
+        a(href='/logout')
+          span Log out
+      else
+        a(href='/login')
+          span Log in

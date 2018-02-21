@@ -1,15 +1,15 @@
-extends layout
+extends layouts/site
 
-include templates/formTemplates
-include templates/threadTemplates
+include templates/form
+include templates/nav
+include templates/table
 
-block content
-  +topBar('/site/')
-  hr
-  +header(settings.name, settings.description, settings.owner)
-  hr
-  +inputThreadForm(captcha)
-  hr
-  +boardListFormat(lists)
-  hr
-  +threadListFormat(threads)
+block navbar
+  +navbar(userinfo)
+    
+block main
+  +thread-form(settings, captcha)
+  +lists-table(lists)
+  +threads-table(threads, settings, userinfo)
+      
+  

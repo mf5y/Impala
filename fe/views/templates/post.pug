@@ -1,0 +1,15 @@
+mixin thread-container(posts)
+  div(class='thread-container')
+    each post in posts
+      +post(post)
+
+mixin post(post)
+  div(class='post-container' id=post.id)
+    div(class='post-header')
+      a(href='#'+post.id)
+        i(class='fa fa-angle-double-right')
+      span(class='author')!= post.author
+      a(href='mailto:'+post.email)!= post.email
+      span(class='subject')!= post.subject
+    div(class='post-body')
+      span!= post.text
