@@ -13,9 +13,19 @@ Express.js forum
 ## Todo
 
 - [ ] Add management options
-- [ ] Re-write front-end to be less messy and look better
+- [x] Re-write front-end to be less messy and look better
 - [x] Add permission checking middleware
 
+## Screenshot
+![shot.png](Screenshot)
+
+## Features
+- Administration tools
+- Login system
+- Modular front-end design
+- Tree-based list system
+- User-made forums
+- Captcha
 
 ## Writing a front-end
 
