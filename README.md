@@ -74,7 +74,7 @@ When the user wants to post to a list or thread, he sends a `POST` request to `/
 - `email` for the email of the poster
 - `subject` for the subject of the post
 
-When the user wants to create a list, he send a 'POST' request to `/site/` with the following properties
+When the user wants to create a list, he send a `POST` request to `/site/` with the following properties
 
 - `name` for the name of the list
 - `description` for a description of the list
